@@ -1,0 +1,54 @@
+
+h1,
+h2,
+h3 {
+  padding: 20px;
+  text-align: center;
+  font-family: "Georgia", serif;
+}
+
+h1 {
+  color: #CC0066;
+  font-size: 52px;
+  text-shadow:
+    -1px -1px 0 #000,
+     1px -1px 0 #000,
+    -1px  1px 0 #000,
+     1px  1px 0 #000;
+
+
+}
+
+h3 {
+  background: #fff;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #CC0066;
+}
+
+h3 {
+  margin-bottom: 70px;
+}
+body {
+  background-image: url("../images/grass-cloth.jpg");
+  
+
+}
+.btn {
+background: #CC0066;
+color: fff;
+margin: 30px;
+
+.btn-primary:hover, .btn-primary:active {
+  background: #008b00;
+}
+
+#bounceIn {
+  animation-name: bounceIn;
+  
+  @keyframes bounceIn {
+  from, 20%, 40%, 60%, 80%, to {
+    animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+  }
+}
+
