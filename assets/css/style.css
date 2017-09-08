@@ -1,6 +1,5 @@
 
 h1,
-h2,
 h3 {
   padding: 20px;
   text-align: center;
@@ -15,8 +14,19 @@ h1 {
      1px -1px 0 #000,
     -1px  1px 0 #000,
      1px  1px 0 #000;
+}
 
-
+h2 {
+  text-align: center;
+  padding-bottom: 20px;
+  font-family: "Georgia", serif;
+  color: #CC0066;
+  font-size: 20px;
+  text-shadow:
+    -1px -1px 0 #000,
+     1px -1px 0 #000,
+    -1px  1px 0 #000,
+     1px  1px 0 #000;
 }
 
 h3 {
@@ -45,10 +55,11 @@ margin: 30px;
 
 #bounceIn {
   animation-name: bounceIn;
+}
   
-  @keyframes bounceIn {
+@keyframes bounceIn {
   from, 20%, 40%, 60%, 80%, to {
-    animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+  animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
   }
 }
 
