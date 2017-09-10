@@ -96,7 +96,7 @@ var game = {
     loadQuestion: function(){
         timer = setInterval(game.countdown, 1000);
         $("#time-left").html("<span id='counter'>15</span>");
-        $("#field").html("<img src= " + questions[game.currentQuestion].question + ">");
+        $("#field").html("<img src= " + questions[game.currentQuestion].question + " height='300px'>");
         
         
         for(var i = 0; i < questions[game.currentQuestion].choices.length; i++) {

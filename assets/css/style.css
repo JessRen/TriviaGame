@@ -48,11 +48,9 @@ body {
 background: #CC0066;
 color: fff;
 margin: 30px;
+padding: 10px;
 
-.btn-primary:hover, .btn-primary:active {
-  background: #cc0066;
-  color: fff;
-}
+
 
 #bounceIn {
   animation-name: bounceIn;
