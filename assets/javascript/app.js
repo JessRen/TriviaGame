@@ -1,224 +1,181 @@
+// Combining timers with Bootstrap and Conditionals
 
+  $('#start').on('click',function() {
+      $('#start').remove();
+      game.loadQuestion();
+  })
 
-  $(document).ready( function() {
-    // Combining slideshow with Bootstrap and Timers with Conditionals
+  $(document).on('click', '.answer-button', function(e) {
+      game.clicked(e);
+  })  
 
+  $(document).on('click', '#reset', function(){
+    game.reset();
+  })
 
-// TODO: Put links to our images in this image array.
-var qimages = [
+// These image arrays include the query image, array of answer choices to present, and the correctAnswer
+var questions = [
   {
-  qimage: "assets/images/bougainvilleas.jpg", 
-  choices: ["bougainvilleas", "hydrangea", "rodedendron"],
-  correctAnswer: 0
+  question: "assets/images/bougainvilleas.jpg", 
+  choices: ["bougainvilleas", "hydrangea", "rhododendron"],
+  correctAnswer: "bougainvilleas",
   },
 
   {
-  qimage: "assets/images/cherry-blossoms.jpg", 
-  choices: ["bougainvilleas", "cherry-blossoms", "rodedendron"],
-  correctAnswer: 1
+  question: "assets/images/cherry-blossoms.jpg", 
+  choices: ["bougainvilleas", "cherry-blossoms", "rhododendron"],
+  correctAnswer: "cherry-blossoms",
   },
 
   {
-  qimage: "assetsimages/dahlia.jpg", 
+  question: "assets/images/dahlia.jpg", 
   choices: ["dahlia", "peony", "daisy"],
-  correctAnswer: 0
+  correctAnswer: "dahlia",
   },
 
   {
-  qimage: "assets/images/delphinium-larkspur.jpg", 
+  question: "assets/images/delphinium-larkspur.jpeg", 
   choices: ["hydrangea", "delphinium", "larkspark"],
-  correctAnswer: 1
+  correctAnswer: "delphinium",
   },
 
   {
-  qimage: "assets/images/gladiolus.jpg", 
+  question: "assets/images/gladiolus.jpg", 
   choices: ["tiger lily", "hydrangea", "gladiolus"],
-  correctAnswer: 2
+  correctAnswer: "gladiolus",
   },
 
   {
-  qimage: "assets/images/honeysuckle.jpg", 
+  question: "assets/images/honeysuckle.jpg", 
   choices: ["tulip", "lily", "honeysuckle"],  
-  correctAnswer: 2
+  correctAnswer: "honeysuckle",
   },
 
   {
-  qimage: "assets/images/hydrangea.jpg", 
+  question: "assets/images/hydrangea.jpg", 
   choices: ["iris", "hydrangea", "bougainvilleas"],
-  correctAnswer: 1
+  correctAnswer: "hydrangea",
   },
 
   {
-  qimage: "assets/images/iris.jpg", 
+  question: "assets/images/iris.jpeg", 
   choices: ["tiger lily", "hydrangea", "iris"], 
-  correctAnswer: 2
+  correctAnswer: "iris",
   },
 
   {
-  qimage: "assets/images/peony.jpg", 
+  question: "assets/images/peony.jpg", 
   choices: ["gerbera daisy", "peony", "cornflower"], 
-  correctAnswer: 1
+  correctAnswer: "peony",
   },
 
   {
-  qimage: "assets/images/rose.jpg",
+  question: "assets/images/rose.jpeg",
   choices: ["carnation", "hydrangea", "rose"], 
-  correctAnswer: 2
+  correctAnswer: "rose"
   }];
 
 
-// Variable showImage will hold the setInterval when we start the slideshow
-var showQimage;
+var game = {
+    questions:questions,
+    currentQuestion:0,
+    counter:16,
+    correct:0,
+    incorrect:0,
+    unanswered:0,
 
-// Qcount will keep track of the index of the currently displaying query-picture.
-var qcount = 0;
+    countdown: function(){
+        game.counter--;
+        $('#time-left').html(game.counter);
+        if(game.counter <= 0){
+          console.log("Time Up");
+          game.timeUp();
+        }
+    },
 
-//*** Advance Feature: Later - Introduce Answers *** need logic below for countCorrect and countWrong
+    loadQuestion: function(){
+        timer = setInterval(game.countdown, 1000);
+        $("#time-left").html("<span id='counter'>15</span>");
+        $("#field").html("<img src= " + questions[game.currentQuestion].question + ">");
+        
+        
+        for(var i = 0; i < questions[game.currentQuestion].choices.length; i++) {
+          $("#field").append('<button class="answer-button" id = ".btn .btn-primary" '+ i +' " data-name=" '+ questions[game.currentQuestion].choices[i]+' "> ' + questions[game.currentQuestion].choices[i] + '</button>');
+        }
+    },
 
-//var answerImages = [ , ,]
+    nextQuestion: function(){
+        game.counter = 15;
+        $('#time-left').html(game.counter);
+        game.currentQuestion++;
+        game.loadQuestion();
 
-//Variable showAnswer can hold setTimeout for answer pauses
-//var showAnswer;
-///*** need logic below for countCorrect and countWrong 
-//*** Track answers as correct or wrong ****
-var countCorrect = 0;
+    },
 
-var countWrong = 0;
+    timeUp: function(){
+        clearInterval(timer);
+        game.unanswered++;
+        $("#field").html('<h2>Time Up! </h2>');
+        $("#field").append('<h3> The Correct Answer Is: '+ questions[game.currentQuestion].correctAnswer + '</h3>');
+        if(game.currentQuestion===questions.length - 1) {
+            setTimeout(game.results, 3*1000);
+        } else {
+            setTimeout(game.nextQuestion, 3*1000);
+        }
 
+    },
 
-    
-//  Variable that will hold our setInterval that runs the counter
-var intervalId;
+    results: function(){
+      clearInterval(timer);
+      $('#field').html("<h2>Complete!</h2>");
+      $('#field').append("<h3>Correct: "+ game.correct + "</h3>");
+      $('#field').append("<h3>Incorrect: "+ game.incorrect + "</h3>");
+      $('#field').append("<h3>Unanswered: "+ game.unanswered + "</h3>") 
+      $('#field').append("<button id='reset' </button>")
+    },
 
-//prevents the clock from being sped up unnecessarily
-var clockRunning = false;
+    clicked: function(e){
+        clearInterval(timer);
+        if($(e.target).data("name")===questions[game.currentQuestion].correctAnswer){
+          game.answeredCorrectly();
+        } else {
+          game.answeredIncorrectly();
+        }
+    },
 
-//  Our counter object.
-var counter = {
+    answeredCorrectly: function(){
+        console.log("Correct-a-mundo");
+        clearInterval(timer);
+        game.correct++;
+        $('#field').html('<h2>Correct-a-mundo. Way to know.</h2>');
+        if(game.currentQuestion===questions.length-1) {
+            setTimeout(game.results, 3*1000);
+        } else {
+            setTimeout(game.nextQuestion, 3*1000);
+        }
+    },
 
-  time: 15,
-  
-  reset: function() {
+    answeredIncorrectly: function(){
+        console.log("Not Correct");
+        clearInterval(timer);
+        game.incorrect++;
+        $('#field').html('<h2>No-Go!</h2>');
+        if(game.currentQuestion===questions.length-1) {
+            setTimeout(game.results,3 * 1000);
+        }   else {
+              setTimeout(game.nextQuestion,3*1000);
+        }
+    },
 
-    counter.time = 0;
-    $("#time-left").html("00:00");
-    clockRunning = false;
+    reset: function(){
+        game.currentQuestion = 0;
+        game.counter = 0;
+        game.correct = 0;
+        game.incorrect = 0;
+        game.unanswered = 0;
+        game.loadQuestion = 0;
 
-    // Change the "display" div to "00:00."
-
-  },
-
-  start: function() {
-
-      //  Use setInterval to start the count here and set the clock to running.
-      if (!clockRunning) {
-        // CLEARS THE BINDING - USING INCREMENT WOULD THROW THE BINDING
-        intervalId = setInterval(counter.count, 1000); 
-        clockrunning = true;
-
-      }
-
-  },
-  stop: function() {
-      clearInterval(intervalId);
-
-      //set the clock to NOT BE RUNNING
-      clockRunning=false;
-
-    //  TODO: Use clearInterval to stop the count here and set the clock to not be running.
-
-  },
-
-
-  count: function() {
-
-    //  TODO: increment time by 1, remember we cant use "this" here.
-      counter.time--;
-    //  TODO: Get the current time, pass that into the counter.timeConverter function,
-    //        and save the result in a variable.
-      var currentTime = counter.timeConverter(counter.time);
-    //  TODO: Use the variable you just created to show the converted time in the "display" div.
-    console.log(currentTime)
-    $("#time-left").html(currentTime);
-  },
-
-  //  THIS FUNCTION IS DONE FOR US!
-  //  We do not need to touch it.
-
-  timeConverter: function(t) {
-
-    //  Takes the current time in seconds and convert it to minutes and seconds (mm:ss).
-    var minutes = Math.floor(t / 60);
-    var seconds = t - (minutes * 60);
-
-    if (seconds < 10) {
-      seconds = "" + seconds;
     }
-
-    if (minutes < 10) {
-      minutes = "" + minutes;
-    }
-
-    return minutes + "" + seconds;
   }
-};
-  // showImage integrates image files for the #image-holder div 
-// in the 'src' attribute of the img tag.
-function showQimage() {
-  $("#image-holder").html("<img src=" + qimages[qcount].qimage + " width='300px'>");
-}
-//next image keeps the slideshow going down the line.
-function nextQimage() {
-
-  // Increments the qcount (index of the current feature photo) by 1.
-  qcount++;
-  if(qcount === qimages.length) {
-    qcount = 0;
-  }
-}
-// tie together showImage with nextImage and with automatic setInterval between them to 10 seconds.
-  function startSlideshow() {
-    console.log("working");
-    counter.start();
-    // showQimage  = setInterval(nextQimage, 10000);
-    showQimage();
-
-
-  }
-//start slideshow automatically
-     
-         //Use jQuery to run "startSlideshow" when we click the "restart" button at conclusion of quiz
-      $("#start-butt").click(startSlideshow);
-
-     
-    function stopSlideshow() {
-
-      //retain clearInterval !!
-      clearInterval(showQimage);
-    };
-
-  });
-
-//GRADE THE ANSWERS SOMEWHERE WITH IF/THEN CONDITONS
-// **** radio buttons must populate varied options with one being correct answer, and upon selection and/or timeout, program must count answer as correct or not, and announce so, and provide correct answer if incorrect answer given.-->
-
-// Answer array for sequence of answers.
-//function showAnswers() {
- // $("#image-holder").html("<img src=" + answerImages[count] + "width='300px'>");
-//}
-
-
-  
-
-
-
-//include inline radio button answers 
-//If correct answer, change screen to congratulate player for choosing it. -->
-//wrong answers and time outs both count against correct score-->
-//If out of time, tell player that time's up and display correct answer.--> 
-//Wait a few seconds, then show the next question.-->
-//If player chooses wrong answer, tell player and then display the correct answer.-->
-//Wait a few seconds, then show the next question. -->
-//the final screen shows the number of correct answers, incorrect answers, above button to restart the game-->
 
 
