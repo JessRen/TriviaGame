@@ -100,7 +100,7 @@ var game = {
         
         
         for(var i = 0; i < questions[game.currentQuestion].choices.length; i++) {
-          $("#field").append('<button class="answer-button" id = ".btn .btn-primary" '+ i +' " data-name=" '+ questions[game.currentQuestion].choices[i]+' "> ' + questions[game.currentQuestion].choices[i] + '</button>');
+          $("#field").append('<button class="answer-button" class="btn btn-primary" '+ i +' " data-name="'+ questions[game.currentQuestion].choices[i]+'"> ' + questions[game.currentQuestion].choices[i] + '</button>');
         }
     },
 
@@ -117,7 +117,7 @@ var game = {
         game.unanswered++;
         $("#field").html('<h2>Time Up! </h2>');
         $("#field").append('<h3> The Correct Answer Is: '+ questions[game.currentQuestion].correctAnswer + '</h3>');
-        if(game.currentQuestion===questions.length - 1) {
+        if(game.currentQuestion==questions.length - 1) {
             setTimeout(game.results, 3*1000);
         } else {
             setTimeout(game.nextQuestion, 3*1000);
@@ -136,7 +136,7 @@ var game = {
 
     clicked: function(e){
         clearInterval(timer);
-        if($(e.target).data("name")===questions[game.currentQuestion].correctAnswer){
+        if($(e.target).data("name")==questions[game.currentQuestion].correctAnswer){
           game.answeredCorrectly();
         } else {
           game.answeredIncorrectly();
@@ -148,7 +148,7 @@ var game = {
         clearInterval(timer);
         game.correct++;
         $('#field').html('<h2>Correct-a-mundo. Way to know.</h2>');
-        if(game.currentQuestion===questions.length-1) {
+        if(game.currentQuestion==questions.length-1) {
             setTimeout(game.results, 3*1000);
         } else {
             setTimeout(game.nextQuestion, 3*1000);
@@ -160,7 +160,7 @@ var game = {
         clearInterval(timer);
         game.incorrect++;
         $('#field').html('<h2>No-Go!</h2>');
-        if(game.currentQuestion===questions.length-1) {
+        if(game.currentQuestion==questions.length-1) {
             setTimeout(game.results,3 * 1000);
         }   else {
               setTimeout(game.nextQuestion,3*1000);

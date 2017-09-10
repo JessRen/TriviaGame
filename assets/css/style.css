@@ -50,7 +50,8 @@ color: fff;
 margin: 30px;
 
 .btn-primary:hover, .btn-primary:active {
-  background: #008b00;
+  background: #cc0066;
+  color: fff;
 }
 
 #bounceIn {
